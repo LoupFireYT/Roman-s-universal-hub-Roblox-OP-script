@@ -55,6 +55,388 @@ end)
 local PrisonLife = Window:NewTab("Prison Life")
 local PrisonLifeSection = PrisonLife:NewSection("Prison Life")
 
+PrisonLifeSection:NewButton("Roman's Prison Life Gui", "Load Roman's Prison Life Gui", function()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Roman's Prison Life Gui", "Ocean")
+
+---- Main
+local Main = Window:NewTab("Main")
+local MainSection = Main:NewSection("Main")
+
+-- Auto Arrest
+
+MainSection:NewButton("Arrest Criminals", "Arrest all criminals", function()
+local Player = game.Players.LocalPlayer
+local cpos = Player.Character.HumanoidRootPart.CFrame
+for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+if v.Name ~= Player.Name then
+local i = 10
+    repeat
+    wait()
+    i = i-1
+    game.Workspace.Remote.arrest:InvokeServer(v.Character.HumanoidRootPart)
+    Player.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+    until i == 0
+end
+end
+Player.Character.HumanoidRootPart.CFrame = cpos
+Notify("Success", "Arrested all of the noobs", "Cool!")
+end)
+
+-- Invisible
+
+MainSection:NewButton("Invisible", "Make you invisible", function()
+local player = game.Players.LocalPlayer
+position     = player.Character.HumanoidRootPart.Position
+wait(0.1)
+player.Character:MoveTo(position + Vector3.new(0, 1000000, 0))
+wait(0.1)
+humanoidrootpart = player.Character.HumanoidRootPart:clone()
+wait(0.1)
+player.Character.HumanoidRootPart:Destroy()
+humanoidrootpart.Parent = player.Character
+player.Character:MoveTo(position)
+wait()
+-- Remove this if you want to see yourself (others still won't see you)
+game.Players.LocalPlayer.Character.Torso.Transparency = 1
+game.Players.LocalPlayer.Character.Head.Transparency  = 1
+game.Players.LocalPlayer.Character["Left Arm"].Transparency = 1
+game.Players.LocalPlayer.Character["Right Arm"].Transparency = 1
+game.Players.LocalPlayer.Character["Left Leg"].Transparency = 1
+game.Players.LocalPlayer.Character["Right Leg"].Transparency = 1
+game.Players.LocalPlayer.Character.Humanoid:RemoveAccessories()
+game.Players.LocalPlayer.Character.Head.face:Remove()
+end)
+
+-- SuperPunch
+MainSection:NewButton("Super Punch", "Super punches!", function()
+mainRemotes = game.ReplicatedStorage meleeRemote = mainRemotes['meleeEvent'] mouse = game.Players.LocalPlayer:GetMouse() punching = false cooldown = false function punch() cooldown = true local part = Instance.new("Part", game.Players.LocalPlayer.Character) part.Transparency = 1 part.Size = Vector3.new(5, 2, 3) part.CanCollide = false local w1 = Instance.new("Weld", part) w1.Part0 = game.Players.LocalPlayer.Character.Torso w1.Part1 = part w1.C1 = CFrame.new(0,0,2) part.Touched:connect(function(hit) if game.Players:FindFirstChild(hit.Parent.Name) then local plr = game.Players:FindFirstChild(hit.Parent.Name) if plr.Name ~= game.Players.LocalPlayer.Name then part:Destroy() for i = 1,100 do meleeRemote:FireServer(plr) end end end end) wait(1) cooldown = false part:Destroy() end mouse.KeyDown:connect(function(key) if cooldown == false then if key:lower() == "f" then punch() end end end)
+end)
+
+-- Guns
+MainSection:NewButton("Guns", "Guns", function()
+lol = Workspace.Remote.ItemHandler:InvokeServer(v.ITEMPICKUP)
+print(lol)
+end)
+
+-- Taser Bypass
+
+MainSection:NewButton("Taser Bypass", "Taser bypass!", function()
+game.Players.LocalPlayer.Character.ClientInputHandler.Disabled = true
+   game.Players.LocalPlayer.CharacterAdded:connect(function()
+   game.Workspace:WaitForChild(game.Players.LocalPlayer.Name)
+   game.Players.LocalPlayer.Character.ClientInputHandler.Disabled = true
+   end)
+   local message = Instance.new("Message",game.Workspace)
+   message.Text = 'Made By Jake11price'
+   wait(2)
+   message:Destroy()
+end)
+
+-- Btools
+
+MainSection:NewButton("Btools", "Give the Btools", function()
+a = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+a.BinType = 2
+b = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+b.BinType = 3
+c = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+c.BinType = 4
+end)
+
+-- Reviz admin
+MainSection:NewButton("Reviz Admin", "Give you reviz Admin", function()
+local Library = loadstring(game:HttpGet("https://pastebin.com/raw/9dsrirD5"))()
+end)
+
+-- Aimbot
+MainSection:NewButton("Aimbot", "Ctrl to aimbot", function()
+-- Script not owned by me, credits to the original owners
+-- Xfer was here (T.V.K)
+-- Left Alt is ESP - Ctrl (Hold) is aimbot - "Q" is to switch [Head or Torso]
+
+PLAYER  = game.Players.LocalPlayer
+MOUSE   = PLAYER:GetMouse()
+CC      = game.Workspace.CurrentCamera
+ 
+ENABLED      = false
+ESP_ENABLED  = true
+ 
+_G.FREE_FOR_ALL = true
+ 
+_G.BIND        = 50
+_G.ESP_BIND    = 52
+_G.CHANGE_AIM  = 'q'
+ 
+_G.AIM_AT = 'Head'
+ 
+wait(1)
+ 
+function GetNearestPlayerToMouse()
+	local PLAYERS      = {}
+	local PLAYER_HOLD  = {}
+	local DISTANCES    = {}
+	for i, v in pairs(game.Players:GetPlayers()) do
+		if v ~= PLAYER then
+			table.insert(PLAYERS, v)
+		end
+	end
+	for i, v in pairs(PLAYERS) do
+		if _G.FREE_FOR_ALL == false then
+			if v and (v.Character) ~= nil and v.TeamColor ~= PLAYER.TeamColor then
+				local AIM = v.Character:FindFirstChild(_G.AIM_AT)
+				if AIM ~= nil then
+					local DISTANCE                 = (AIM.Position - game.Workspace.CurrentCamera.CoordinateFrame.p).magnitude
+					local RAY                      = Ray.new(game.Workspace.CurrentCamera.CoordinateFrame.p, (MOUSE.Hit.p - CC.CoordinateFrame.p).unit * DISTANCE)
+					local HIT,POS                  = game.Workspace:FindPartOnRay(RAY, game.Workspace)
+					local DIFF                     = math.floor((POS - AIM.Position).magnitude)
+					PLAYER_HOLD[v.Name .. i]       = {}
+					PLAYER_HOLD[v.Name .. i].dist  = DISTANCE
+					PLAYER_HOLD[v.Name .. i].plr   = v
+					PLAYER_HOLD[v.Name .. i].diff  = DIFF
+					table.insert(DISTANCES, DIFF)
+				end
+			end
+		elseif _G.FREE_FOR_ALL == true then
+			local AIM = v.Character:FindFirstChild(_G.AIM_AT)
+			if AIM ~= nil then
+				local DISTANCE                 = (AIM.Position - game.Workspace.CurrentCamera.CoordinateFrame.p).magnitude
+				local RAY                      = Ray.new(game.Workspace.CurrentCamera.CoordinateFrame.p, (MOUSE.Hit.p - CC.CoordinateFrame.p).unit * DISTANCE)
+				local HIT,POS                  = game.Workspace:FindPartOnRay(RAY, game.Workspace)
+				local DIFF                     = math.floor((POS - AIM.Position).magnitude)
+				PLAYER_HOLD[v.Name .. i]       = {}
+				PLAYER_HOLD[v.Name .. i].dist  = DISTANCE
+				PLAYER_HOLD[v.Name .. i].plr   = v
+				PLAYER_HOLD[v.Name .. i].diff  = DIFF
+				table.insert(DISTANCES, DIFF)
+			end
+		end
+	end
+ 
+	if unpack(DISTANCES) == nil then
+		return false
+	end
+ 
+	local L_DISTANCE = math.floor(math.min(unpack(DISTANCES)))
+	if L_DISTANCE > 20 then
+		return false
+	end
+ 
+	for i, v in pairs(PLAYER_HOLD) do
+		if v.diff == L_DISTANCE then
+			return v.plr
+		end
+	end
+	return false
+end
+ 
+GUI_MAIN                           = Instance.new('ScreenGui', game.CoreGui)
+GUI_TARGET                         = Instance.new('TextLabel', GUI_MAIN)
+GUI_AIM_AT                         = Instance.new('TextLabel', GUI_MAIN)
+ 
+GUI_MAIN.Name                      = 'AIMBOT'
+ 
+GUI_TARGET.Size                    = UDim2.new(0,200,0,30)
+GUI_TARGET.BackgroundTransparency  = 0.5
+GUI_TARGET.BackgroundColor         = BrickColor.new('Fossil')
+GUI_TARGET.BorderSizePixel         = 0
+GUI_TARGET.Position                = UDim2.new(0.5,-100,0,0)
+GUI_TARGET.Text                    = 'AIMBOT : OFF'
+GUI_TARGET.TextColor3              = Color3.new(1,1,1)
+GUI_TARGET.TextStrokeTransparency  = 1
+GUI_TARGET.TextWrapped             = true
+GUI_TARGET.FontSize                = 'Size24'
+GUI_TARGET.Font                    = 'SourceSansBold'
+ 
+GUI_AIM_AT.Size                    = UDim2.new(0,200,0,20)
+GUI_AIM_AT.BackgroundTransparency  = 0.5
+GUI_AIM_AT.BackgroundColor         = BrickColor.new('Fossil')
+GUI_AIM_AT.BorderSizePixel         = 0
+GUI_AIM_AT.Position                = UDim2.new(0.5,-100,0,30)
+GUI_AIM_AT.Text                    = 'AIMING : HEAD'
+GUI_AIM_AT.TextColor3              = Color3.new(1,1,1)
+GUI_AIM_AT.TextStrokeTransparency  = 1
+GUI_AIM_AT.TextWrapped             = true
+GUI_AIM_AT.FontSize                = 'Size18'
+GUI_AIM_AT.Font                    = 'SourceSansBold'
+ 
+local TRACK = false
+ 
+function CREATE(BASE, TEAM)
+	local ESP_MAIN                   = Instance.new('BillboardGui', PLAYER.PlayerGui)
+	local ESP_DOT                    = Instance.new('Frame', ESP_MAIN)
+	local ESP_NAME                   = Instance.new('TextLabel', ESP_MAIN)
+ 
+	ESP_MAIN.Name                    = 'ESP'
+	ESP_MAIN.Adornee                 = BASE
+	ESP_MAIN.AlwaysOnTop             = true
+	ESP_MAIN.ExtentsOffset           = Vector3.new(0, 1, 0)
+	ESP_MAIN.Size                    = UDim2.new(0, 5, 0, 5)
+ 
+	ESP_DOT.Name                     = 'DOT'
+	ESP_DOT.BackgroundColor          = BrickColor.new('Bright red')
+	ESP_DOT.BackgroundTransparency   = 0.3
+	ESP_DOT.BorderSizePixel          = 0
+	ESP_DOT.Position                 = UDim2.new(-0.5, 0, -0.5, 0)
+	ESP_DOT.Size                     = UDim2.new(2, 0, 2, 0)
+	ESP_DOT.Visible                  = true
+	ESP_DOT.ZIndex                   = 10
+ 
+	ESP_NAME.Name                    = 'NAME'
+	ESP_NAME.BackgroundColor3        = Color3.new(255, 255, 255)
+	ESP_NAME.BackgroundTransparency  = 1
+	ESP_NAME.BorderSizePixel         = 0
+	ESP_NAME.Position                = UDim2.new(0, 0, 0, -40)
+	ESP_NAME.Size                    = UDim2.new(1, 0, 10, 0)
+	ESP_NAME.Visible                 = true
+	ESP_NAME.ZIndex                  = 10
+	ESP_NAME.Font                    = 'ArialBold'
+	ESP_NAME.FontSize                = 'Size14'
+	ESP_NAME.Text                    = BASE.Parent.Name:upper()
+	ESP_NAME.TextColor               = BrickColor.new('Bright red')
+end
+ 
+function CLEAR()
+	for _,v in pairs(PLAYER.PlayerGui:children()) do
+		if v.Name == 'ESP' and v:IsA('BillboardGui') then
+			v:Destroy()
+		end
+	end
+end
+ 
+function FIND()
+	CLEAR()
+	TRACK = true
+	spawn(function()
+		while wait() do
+			if TRACK then
+				CLEAR()
+				for i,v in pairs(game.Players:GetChildren()) do
+					if v.Character and v.Character:FindFirstChild('Head') then
+						if _G.FREE_FOR_ALL == false then
+							if v.TeamColor ~= PLAYER.TeamColor then
+								if v.Character:FindFirstChild('Head') then
+									CREATE(v.Character.Head, true)
+								end
+							end
+						else
+							if v.Character:FindFirstChild('Head') then
+								CREATE(v.Character.Head, true)
+							end
+						end
+					end
+				end
+			end
+		end
+		wait(1)
+	end)
+end
+ 
+MOUSE.KeyDown:connect(function(KEY)
+	KEY = KEY:lower():byte()
+	if KEY == _G.BIND then
+		ENABLED = true
+	end
+end)
+ 
+MOUSE.KeyUp:connect(function(KEY)
+	KEY = KEY:lower():byte()
+	if KEY == _G.BIND then
+		ENABLED = false
+	end
+end)
+ 
+MOUSE.KeyDown:connect(function(KEY)
+	KEY = KEY:lower():byte()
+	if KEY == _G.ESP_BIND then
+		if ESP_ENABLED == false then
+			FIND()
+			ESP_ENABLED = true
+			print('ESP : ON')
+		elseif ESP_ENABLED == true then
+			wait()
+			CLEAR()
+			TRACK = false
+			ESP_ENABLED = true
+			print('ESP : OFF')
+		end
+	end
+end)
+ 
+MOUSE.KeyDown:connect(function(KEY)
+	if KEY == _G.CHANGE_AIM then
+		if _G.AIM_AT == 'Head' then
+			_G.AIM_AT = 'Torso'
+			GUI_AIM_AT.Text = 'AIMING : TORSO'
+		elseif _G.AIM_AT == 'Torso' then
+			_G.AIM_AT = 'Head'
+			GUI_AIM_AT.Text = 'AIMING : HEAD'
+		end
+	end
+end)
+ 
+game:GetService('RunService').RenderStepped:connect(function()
+	if ENABLED then
+		local TARGET = GetNearestPlayerToMouse()
+		if (TARGET ~= false) then
+			local AIM = TARGET.Character:FindFirstChild(_G.AIM_AT)
+			if AIM then
+				CC.CoordinateFrame = CFrame.new(CC.CoordinateFrame.p, AIM.CFrame.p)
+			end
+			GUI_TARGET.Text = 'AIMBOT : '.. TARGET.Name:sub(1, 5)
+		else
+			GUI_TARGET.Text = 'AIMBOT : OFF'
+		end
+	end
+end)
+ 
+repeat
+	wait()
+	if ESP_ENABLED == true then
+		FIND()
+	end
+until ESP_ENABLED == false
+wait()
+_G.FREE_FOR_ALL = true
+_G.BIND = 50 -- LEFT CTRL
+_G.ESP_BIND = 52 -- LEFT ALT
+end)
+
+-- Speed
+MainSection:NewSlider("Speed", "Change speed", 250, 0, function(s) -- 250 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+
+-- Jump
+MainSection:NewSlider("JumpPower", "SliderInfo", 500, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+
+-- Fast Respawn
+MainSection:NewButton("Fast Respawn", "Respawn Faster", function()
+local Library = loadstring(game:HttpGet("https://pastebin.com/raw/j5fih1sE"))()
+end)
+
+---- Teleports
+local TP = Window:NewTab("Teleports")
+local TPSection = TP:NewSection("Teleports")
+
+-- Prison
+TPSection:NewButton("Prison", "TP you to the prison", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(918.77,100,2379.07)
+end)
+
+-- Yard
+TPSection:NewButton("Yard", "TP you to the yard", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(779.87,98,2458.93)
+end)
+
+-- Criminal Base
+TPSection:NewButton("Criminal Base", "TP you to the criminal base", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-943.46,94.13,2063.63)
+end)
+end)
+
 
 PrisonLifeSection:NewButton("PrisonBreaker V1.5", "Load PrisonBreaker V1.5", function()
 -- This script was cracked by jimcool33 on roblox.
