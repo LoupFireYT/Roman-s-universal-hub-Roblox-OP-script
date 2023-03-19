@@ -7441,3 +7441,12 @@ end)
 TWWSection:NewButton("TWW V.G hub", "Load TWW V.G hub script", function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/littlegui/main/The-Wild-One'))()
 end)
+
+
+-- Car Dealership Tycoon
+local CDT = Window:NewTab("Car Dealership tycoon")
+local CDTSection = CDT:NewSection("Car Dealership tycoon")
+
+CDTSection:NewButton("Car Dealership Tycoon autofarm", "Load CDT autofarm", function()
+loadstring(game:HttpGet(loadstring(game:HttpGet("https://raw.githubusercontent.com/03koios/Loader/main/Loader.lua"))()))()
+end)
